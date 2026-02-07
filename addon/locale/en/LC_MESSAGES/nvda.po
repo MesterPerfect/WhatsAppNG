@@ -125,6 +125,18 @@ msgstr "Message list: phone numbers hidden"
 msgid "Message list: phone numbers visible"
 msgstr "Message list: phone numbers visible"
 
+#: addon/appModules/whatsapp_root.py:1117
+msgid "Toggle automatic Focus Mode"
+msgstr "Toggle automatic Focus Mode"
+
+#: addon/appModules/whatsapp_root.py:1127
+msgid "Auto Focus Mode: enabled"
+msgstr "Auto Focus Mode: enabled"
+
+#: addon/appModules/whatsapp_root.py:1129
+msgid "Auto Focus Mode: disabled"
+msgstr "Auto Focus Mode: disabled"
+
 #. Add-on summary/title, usually the user visible name of the add-on
 #. Translators: Summary/title for this add-on
 #. to be shown on installation and add-on information found in add-on store

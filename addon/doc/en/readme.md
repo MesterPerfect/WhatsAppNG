@@ -16,6 +16,7 @@ NVDA add-on that provides accessibility enhancements for the web-based WhatsApp 
 
 - Toggle phone number filtering in conversation list
 - Toggle phone number filtering in message list
+- Toggle automatic Focus Mode (allows Browse Mode when needed)
 
 ## Requirements
 

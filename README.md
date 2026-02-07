@@ -9,11 +9,14 @@ NVDA add-on that provides accessibility enhancements for the web-based WhatsApp 
 - **Alt+D**: Focus message input field
 - **Enter**: Play voice message (works in individual chats and groups)
 - **Shift+Enter**: Open message context menu
+- **Control+C**: Copy current message to clipboard
+- **Control+R**: Read complete message (clicks "read more" button if needed)
 
 ### Toggle Scripts (no default shortcut - configure in Input Gestures)
 
 - Toggle phone number filtering in conversation list
 - Toggle phone number filtering in message list
+- Toggle automatic Focus Mode (allows Browse Mode when needed)
 
 ## Requirements
 

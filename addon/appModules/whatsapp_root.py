@@ -24,6 +24,7 @@ CONFIG_SECTION = "whatsappPhoneFilter"
 SPEC = {
 	'filterChatList': 'boolean(default=False)',
 	'filterMessageList': 'boolean(default=True)',
+	'autoFocusMode': 'boolean(default=True)',
 }
 
 MAYBE_RE = re.compile(r"\bTalvez\b\s*", re.IGNORECASE)
@@ -69,8 +70,13 @@ class AppModule(appModuleHandler.AppModule):
 		Auto-disable browse mode to keep Focus Mode active.
 		If browse mode gets activated (e.g. by Escape), immediately disable it.
 		Only affects WhatsApp, not other applications.
+		Respects autoFocusMode configuration setting.
 		"""
 		try:
+			# Check if auto Focus Mode is enabled
+			if not self._shouldAutoFocusMode():
+				return
+
 			focus = api.getFocusObject()
 			if focus and focus.treeInterceptor:
 				# Only process WhatsApp objects (check by appModule)
@@ -254,6 +260,18 @@ class AppModule(appModuleHandler.AppModule):
 		try:
 			section = config.conf[CONFIG_SECTION]
 			val = section.get("filterMessageList", True)
+			# Explicitly convert (may come as string from NVDA)
+			if isinstance(val, str):
+				val = val.lower() == 'true'
+			return val
+		except Exception:
+			return True
+
+	def _shouldAutoFocusMode(self):
+		"""Always read from config.conf and convert to boolean"""
+		try:
+			section = config.conf[CONFIG_SECTION]
+			val = section.get("autoFocusMode", True)
 			# Explicitly convert (may come as string from NVDA)
 			if isinstance(val, str):
 				val = val.lower() == 'true'
@@ -724,6 +742,11 @@ class AppModule(appModuleHandler.AppModule):
 
 	def event_gainFocus(self, obj, nextHandler):
 		"""Handle focus gain events in WhatsApp."""
+		# Check if auto Focus Mode is enabled
+		if not self._shouldAutoFocusMode():
+			nextHandler()
+			return
+
 		# Only process WhatsApp objects (check by appModule)
 		try:
 			app = getattr(obj, "appModule", None)
@@ -1104,8 +1127,23 @@ class AppModule(appModuleHandler.AppModule):
 		gesture="kb:escape"
 	)
 	def script_escape(self, gesture):
-		"""Escape: Pass through to application (no description = not in gestures dialog)."""
+		"""Escape: Pass through to application."""
 		gesture.send()
+
+	@scriptHandler.script(
+		description=_("Toggle automatic Focus Mode")
+	)
+	def script_toggleAutoFocusMode(self, gesture):
+		"""Toggle automatic Focus Mode activation."""
+		current = self._shouldAutoFocusMode()
+		new_val = not current
+		config.conf[CONFIG_SECTION]["autoFocusMode"] = new_val
+		config.conf.save()
+
+		if new_val:
+			ui.message(_("Auto Focus Mode: enabled"))
+		else:
+			ui.message(_("Auto Focus Mode: disabled"))
 
 def _role(obj):
 	try:

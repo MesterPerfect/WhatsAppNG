@@ -16,6 +16,7 @@ Complemento NVDA que fornece melhorias de acessibilidade para o WhatsApp Desktop
 
 - Alternar filtragem de números de telefone na lista de conversas
 - Alternar filtragem de números de telefone na lista de mensagens
+- Alternar Modo de Foco automático (permite usar Browse Mode quando necessário)
 
 ## Requisitos
 
